@@ -1,0 +1,323 @@
+.editor {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+  background: #f9f9f9;
+  border-right: 1px solid #e0e0e0;
+  height: 100%;
+  overflow-y: auto;
+  width: 380px;
+  min-width: 380px;
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.sectionTitle {
+  font-size: 13px;
+  font-weight: 600;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 4px 0;
+}
+
+.typeSelector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.typeButton {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid #d0d0d0;
+  background: #fff;
+  font-size: 13px;
+  cursor: pointer;
+  color: #333;
+  transition: all 0.15s;
+}
+
+.typeButton:hover {
+  border-color: #4f46e5;
+  color: #4f46e5;
+}
+
+.typeButton.active {
+  background: #4f46e5;
+  border-color: #4f46e5;
+  color: #fff;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #555;
+}
+
+.input,
+.select,
+.textarea {
+  padding: 8px 10px;
+  border: 1px solid #d0d0d0;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #1a1a1a;
+  background: #fff;
+  outline: none;
+  transition: border-color 0.15s;
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.input:focus,
+.select:focus,
+.textarea:focus {
+  border-color: #4f46e5;
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 72px;
+}
+
+.marksRow {
+  display: flex;
+  gap: 6px;
+}
+
+.markToggle {
+  padding: 4px 10px;
+  border-radius: 4px;
+  border: 1px solid #d0d0d0;
+  background: #fff;
+  font-size: 12px;
+  cursor: pointer;
+  color: #555;
+  transition: all 0.15s;
+}
+
+.markToggle.active {
+  background: #4f46e5;
+  border-color: #4f46e5;
+  color: #fff;
+}
+
+.addRunButton {
+  align-self: flex-start;
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 1px dashed #4f46e5;
+  background: transparent;
+  color: #4f46e5;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.addRunButton:hover {
+  background: #eef2ff;
+}
+
+.runItem {
+  background: #f5f5f5;
+  border-radius: 6px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  position: relative;
+}
+
+.runHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.runLabel {
+  font-size: 11px;
+  font-weight: 600;
+  color: #888;
+  text-transform: uppercase;
+}
+
+.removeRunButton {
+  background: none;
+  border: none;
+  color: #aaa;
+  font-size: 16px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0 2px;
+}
+
+.removeRunButton:hover {
+  color: #e53e3e;
+}
+
+.addButton {
+  padding: 10px;
+  border-radius: 6px;
+  border: none;
+  background: #4f46e5;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.addButton:hover {
+  background: #4338ca;
+}
+
+.addButton:disabled {
+  background: #a5b4fc;
+  cursor: not-allowed;
+}
+
+.componentList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.componentItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #333;
+}
+
+.componentTag {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: #eef2ff;
+  color: #4f46e5;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.componentSummary {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #666;
+}
+
+.componentActions {
+  display: flex;
+  gap: 4px;
+}
+
+.iconButton {
+  background: none;
+  border: none;
+  color: #aaa;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+.iconButton:hover {
+  background: #f0f0f0;
+  color: #555;
+}
+
+.iconButton.danger:hover {
+  background: #fff5f5;
+  color: #e53e3e;
+}
+
+.hint {
+  font-size: 11px;
+  color: #888;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.hint code {
+  background: #f0f0f0;
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-size: 11px;
+  color: #4f46e5;
+}
+
+.variableRow {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  min-width: 0;
+}
+
+.variableRow .input {
+  flex: 1;
+  min-width: 0;
+}
+
+.loopTable {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.loopRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.loopRowLabel {
+  font-size: 11px;
+  font-weight: 600;
+  color: #888;
+  width: 24px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.loopCell {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+}
