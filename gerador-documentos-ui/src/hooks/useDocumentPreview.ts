@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import type { Variables } from "../types";
-import type { LoopVariables } from "../components/variablesFiller/VariablesFiller.types";
+import type { LoopVariables } from "../../public/variablesFiller/VariablesFiller.types";
 
 const BASE_URL = "http://localhost:8080/documents";
 const DEBOUNCE_MS = 500;

@@ -1,4 +1,4 @@
-import type { Variables } from '../../types';
+import type { Variables } from "../../types";
 
 export type LoopVariables = Record<string, string[]>;
 

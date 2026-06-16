@@ -1,0 +1,34 @@
+.input {
+  composes: input from "../../../styles/shared.module.css";
+}
+.select {
+  composes: select from "../../../styles/shared.module.css";
+}
+.hint {
+  composes: hint from "../../../styles/shared.module.css";
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.input,
+.select {
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-border-input);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-md);
+  color: var(--color-text-primary);
+  background: var(--color-bg-card);
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color var(--transition-fast);
+}
+
+.input:focus,
+.select:focus {
+  border-color: var(--color-primary);
+}

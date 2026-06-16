@@ -36,7 +36,7 @@ docker compose -f docker-compose.dev.yml up -d
 
 Backend (em outro terminal, dentro de `geradordocumentos/`):
 ```bash
-mvn spring-boot:run -Dspring-boot.run.profiles=local
+mvn spring-boot:run -D spring-boot.run.profiles=local
 ```
 
 Frontend (em outro terminal, dentro de `gerador-documentos-ui/`):

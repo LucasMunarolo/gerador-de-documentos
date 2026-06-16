@@ -1,137 +1,76 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { Editor } from "./components/editor";
 import { Preview } from "./components/preview";
 import { TemplateList } from "./components/templateList";
-import { VariablesFiller } from "./components/variablesFiller";
-import type { LoopVariables } from "./components/variablesFiller/VariablesFiller.types";
 import { useTemplates } from "./hooks/useTemplates";
-import type {
-  Document,
-  DocumentComponent,
-  Variables,
-  TemplateResponse,
-} from "./types";
+import { useTemplateEditor } from "./hooks/useTemplateEditor";
+import { useDocumentGenerator } from "./hooks/useDocumentGenerator";
+import { useView } from "./hooks/useView.ts";
+import type { TemplateResponse } from "./types";
 import styles from "./App.module.css";
+import { VariablesFiller } from "./components/VariablesFiller/VariablesFiller.tsx";
 
-const EMPTY_DOCUMENT: Document = { components: [] };
-type View = "templates" | "documents";
+const EMPTY_DOCUMENT = { components: [] };
 
 export function App() {
-  const [view, setView] = useState<View>("templates");
+  const { view, setView } = useView();
 
-  // ── Template editor state ──
-  const [document, setDocument] = useState<Document>(EMPTY_DOCUMENT);
-  const [templateName, setTemplateName] = useState("");
-  const [currentTemplateId, setCurrentTemplateId] = useState<number | null>(
-    null,
-  );
-  const [saveError, setSaveError] = useState<string | null>(null);
+  const { templates, loading, error, fetchAll, remove } = useTemplates();
 
-  // ── Document generator state ──
-  const [selectedTemplate, setSelectedTemplate] =
-    useState<TemplateResponse | null>(null);
-  const [variables, setVariables] = useState<Variables>({});
-  const [loopVariables, setLoopVariables] = useState<LoopVariables>({});
+  const {
+    document,
+    templateName,
+    setTemplateName,
+    currentTemplateId,
+    saveError,
+    loading: saving,
+    addComponent,
+    removeComponent,
+    moveComponent,
+    loadTemplate,
+    importJson,
+    clear,
+    save,
+  } = useTemplateEditor();
 
-  const { templates, loading, error, fetchAll, create, update, remove } =
-    useTemplates();
+  const {
+    selectedTemplate,
+    variables,
+    loopVariables,
+    selectTemplate,
+    setVariable,
+    setLoopVariable,
+  } = useDocumentGenerator();
 
   useEffect(() => {
     fetchAll();
   }, []);
 
-  // ── Template editor handlers ──
-  function handleAddComponent(component: DocumentComponent) {
-    setDocument((prev) => ({ components: [...prev.components, component] }));
-  }
-
-  function handleRemoveComponent(index: number) {
-    setDocument((prev) => ({
-      components: prev.components.filter((_, i) => i !== index),
-    }));
-  }
-
-  function handleMoveComponent(index: number, direction: "up" | "down") {
-    setDocument((prev) => {
-      const components = [...prev.components];
-      const target = direction === "up" ? index - 1 : index + 1;
-      if (target < 0 || target >= components.length) return prev;
-      [components[index], components[target]] = [
-        components[target],
-        components[index],
-      ];
-      return { components };
-    });
-  }
-
-  function handleLoadTemplate(template: TemplateResponse) {
-    setDocument(template.document);
-    setTemplateName(template.name);
-    setCurrentTemplateId(template.id);
-  }
-
-  async function handleSave() {
-    setSaveError(null);
-    if (!templateName.trim()) {
-      setSaveError("Informe um nome para o template.");
-      return;
-    }
-    const body = { name: templateName, document };
-    const result = currentTemplateId
-      ? await update(currentTemplateId, body)
-      : await create(body);
-    if (result) {
-      setCurrentTemplateId(result.id);
-      fetchAll();
-    }
-  }
-
   function handleImportJson(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      try {
-        const parsed = JSON.parse(ev.target?.result as string);
-        if (!parsed.components) throw new Error("JSON inválido");
-        setDocument({ components: parsed.components });
-        setTemplateName(file.name.replace(".json", ""));
-        setCurrentTemplateId(null);
-      } catch {
-        alert("Arquivo JSON inválido.");
-      }
-    };
-    reader.readAsText(file);
+    importJson(file, alert);
     e.target.value = "";
   }
 
-  function handleClearTemplate() {
-    if (confirm("Limpar o documento?")) {
-      setDocument(EMPTY_DOCUMENT);
-      setTemplateName("");
-      setCurrentTemplateId(null);
-    }
+  function handleDelete(id: number) {
+    remove(id).then(() => fetchAll());
   }
 
-  // ── Document generator handlers ──
-  function handleSelectTemplate(template: TemplateResponse) {
-    setSelectedTemplate(template);
-    setVariables({});
-    setLoopVariables({});
+  function handleLoadForEdit(template: TemplateResponse) {
+    loadTemplate(template);
   }
 
-  function handleVariableChange(key: string, value: string) {
-    setVariables((prev) => ({ ...prev, [key]: value }));
-  }
-
-  function handleLoopVariableChange(key: string, values: string[]) {
-    setLoopVariables((prev) => ({ ...prev, [key]: values }));
+  function handleSwitchToDocuments() {
+    setView("documents");
+    fetchAll();
   }
 
   return (
     <div className={styles.app}>
       <header className={styles.header}>
         <span className={styles.logo}>Gerador de Documentos</span>
+
         <nav className={styles.nav}>
           <button
             className={`${styles.navButton} ${view === "templates" ? styles.navActive : ""}`}
@@ -141,14 +80,12 @@ export function App() {
           </button>
           <button
             className={`${styles.navButton} ${view === "documents" ? styles.navActive : ""}`}
-            onClick={() => {
-              setView("documents");
-              fetchAll();
-            }}
+            onClick={handleSwitchToDocuments}
           >
             Gerar Documento
           </button>
         </nav>
+
         {view === "templates" && (
           <div className={styles.saveRow}>
             {saveError && <span className={styles.saveError}>{saveError}</span>}
@@ -160,8 +97,8 @@ export function App() {
             />
             <button
               className={styles.saveButton}
-              onClick={handleSave}
-              disabled={loading}
+              onClick={save}
+              disabled={saving}
             >
               {currentTemplateId ? "Atualizar" : "Salvar"}
             </button>
@@ -176,7 +113,7 @@ export function App() {
             </label>
             <button
               className={styles.clearButton}
-              onClick={handleClearTemplate}
+              onClick={() => confirm("Limpar o documento?") && clear()}
             >
               Limpar
             </button>
@@ -191,17 +128,17 @@ export function App() {
               templates={templates}
               loading={loading}
               error={error}
-              onLoad={handleLoadTemplate}
-              onDelete={(id) => remove(id).then(() => fetchAll())}
+              onLoad={handleLoadForEdit}
+              onDelete={handleDelete}
               onRefresh={fetchAll}
               mode="manage"
             />
             <Editor
               document={document}
               variables={{}}
-              onAddComponent={handleAddComponent}
-              onRemoveComponent={handleRemoveComponent}
-              onMoveComponent={handleMoveComponent}
+              onAddComponent={addComponent}
+              onRemoveComponent={removeComponent}
+              onMoveComponent={moveComponent}
             />
             <Preview
               document={document}
@@ -217,8 +154,8 @@ export function App() {
               templates={templates}
               loading={loading}
               error={error}
-              onLoad={handleSelectTemplate}
-              onDelete={(id) => remove(id).then(() => fetchAll())}
+              onLoad={selectTemplate}
+              onDelete={handleDelete}
               onRefresh={fetchAll}
               mode="select"
             />
@@ -227,8 +164,8 @@ export function App() {
               loopVars={selectedTemplate?.loopVariables ?? []}
               variables={variables}
               loopVariables={loopVariables}
-              onVariableChange={handleVariableChange}
-              onLoopVariableChange={handleLoopVariableChange}
+              onVariableChange={setVariable}
+              onLoopVariableChange={setLoopVariable}
             />
             <Preview
               document={selectedTemplate?.document ?? EMPTY_DOCUMENT}

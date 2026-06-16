@@ -1,10 +1,14 @@
+.cardMeta {
+  composes: hint from "../../styles/shared.module.css";
+}
+
 .panel {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: 20px;
-  background: #f9f9f9;
-  border-right: 1px solid #e0e0e0;
+  gap: var(--space-5);
+  padding: var(--space-7);
+  background: var(--color-bg-page);
+  border-right: 1px solid var(--color-border);
   width: 320px;
   min-width: 320px;
   height: 100%;
@@ -18,24 +22,25 @@
 }
 
 .title {
-  font-size: 15px;
-  font-weight: 600;
-  color: #1a1a1a;
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
   margin: 0;
 }
 
 .refreshButton {
   background: none;
   border: none;
-  color: #4f46e5;
+  color: var(--color-primary);
   font-size: 18px;
   cursor: pointer;
-  padding: 2px 6px;
-  border-radius: 4px;
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-sm);
+  transition: background var(--transition-fast);
 }
 
 .refreshButton:hover {
-  background: #eef2ff;
+  background: var(--color-primary-bg);
 }
 
 .refreshButton:disabled {
@@ -43,101 +48,71 @@
   cursor: not-allowed;
 }
 
-.error {
-  font-size: 12px;
-  color: #e53e3e;
-  background: #fff5f5;
-  border: 1px solid #fed7d7;
-  border-radius: 6px;
-  padding: 8px 10px;
-}
-
-.empty {
-  font-size: 13px;
-  color: #aaa;
-  text-align: center;
-  padding: 32px 0;
-}
-
 .list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--space-3);
 }
 
 .card {
-  background: #fff;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 12px;
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: var(--space-2);
 }
 
 .cardName {
-  font-size: 14px;
-  font-weight: 600;
-  color: #1a1a1a;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .cardMeta {
-  font-size: 11px;
-  color: #888;
-}
-
-.cardVariables {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-}
-
-.variableTag {
-  font-size: 10px;
-  padding: 2px 6px;
-  border-radius: 4px;
-  background: #eef2ff;
-  color: #4f46e5;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-placeholder);
 }
 
 .cardActions {
   display: flex;
-  gap: 6px;
+  gap: var(--space-2);
   margin-top: 2px;
 }
 
 .loadButton {
   flex: 1;
-  padding: 6px;
-  border-radius: 6px;
-  border: 1px solid #4f46e5;
-  background: #fff;
-  color: #4f46e5;
-  font-size: 12px;
-  font-weight: 500;
+  padding: var(--space-2);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-primary);
+  background: var(--color-bg-card);
+  color: var(--color-primary);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
   cursor: pointer;
-  transition: all 0.15s;
+  transition: background var(--transition-fast);
 }
 
 .loadButton:hover {
-  background: #eef2ff;
+  background: var(--color-primary-bg);
 }
 
 .deleteButton {
-  padding: 6px 10px;
-  border-radius: 6px;
-  border: 1px solid #e0e0e0;
-  background: #fff;
-  color: #aaa;
-  font-size: 12px;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-card);
+  color: var(--color-text-placeholder);
+  font-size: var(--font-size-base);
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all var(--transition-fast);
 }
 
 .deleteButton:hover {
-  border-color: #e53e3e;
-  color: #e53e3e;
+  border-color: var(--color-danger);
+  color: var(--color-danger);
 }

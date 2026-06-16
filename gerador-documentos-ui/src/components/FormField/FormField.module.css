@@ -1,0 +1,36 @@
+.field {
+  composes: field from "../../styles/shared.module.css";
+}
+.label {
+  composes: label from "../../styles/shared.module.css";
+}
+.hint {
+  composes: hint from "../../styles/shared.module.css";
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.label {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-muted);
+}
+
+.hint {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-placeholder);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.hint code {
+  background: var(--color-bg-hover);
+  padding: 1px var(--space-1);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  color: var(--color-primary);
+}

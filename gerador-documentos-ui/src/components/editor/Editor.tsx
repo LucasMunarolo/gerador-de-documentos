@@ -1,75 +1,8 @@
-import { useState } from "react";
-import type { Variables } from "../../types";
-import { ComponentForm, summarizeComponent } from "../componentForm";
+import { ComponentForm, summarizeComponent } from "../ComponentForm";
+import { Button } from "../Button";
+import { VariablesPanel } from "../VariablesPanel";
 import type { EditorProps } from "./Editor.types";
 import styles from "./Editor.module.css";
-
-// ── Variables Panel ───────────────────────────────────────────────────────────
-
-interface VariablesPanelProps {
-  variables: Variables;
-  onAdd: (key: string, value: string) => void;
-  onRemove: (key: string) => void;
-}
-
-function VariablesPanel({ variables, onAdd, onRemove }: VariablesPanelProps) {
-  const [key, setKey] = useState("");
-  const [value, setValue] = useState("");
-
-  function handleAdd() {
-    if (!key.trim()) return;
-    onAdd(key.trim(), value);
-    setKey("");
-    setValue("");
-  }
-
-  return (
-    <div className={styles.section}>
-      <p className={styles.sectionTitle}>Variáveis de teste</p>
-      <p className={styles.hint}>
-        Valores apenas para preview — não são salvos no template. Use{" "}
-        <code>{"{{nome}}"}</code> nos textos para interpolação.
-      </p>
-
-      <div className={styles.variableRow}>
-        <input
-          className={styles.input}
-          placeholder="nome"
-          value={key}
-          onChange={(e) => setKey(e.target.value)}
-        />
-        <input
-          className={styles.input}
-          placeholder="valor"
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-        />
-        <button
-          className={styles.addRunButton}
-          onClick={handleAdd}
-          disabled={!key.trim()}
-        >
-          +
-        </button>
-      </div>
-
-      {Object.entries(variables).map(([k, v]) => (
-        <div key={k} className={styles.componentItem}>
-          <span className={styles.componentTag}>{`{{${k}}}`}</span>
-          <span className={styles.componentSummary}>{v}</span>
-          <button
-            className={`${styles.iconButton} ${styles.danger}`}
-            onClick={() => onRemove(k)}
-          >
-            ×
-          </button>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-// ── Editor ────────────────────────────────────────────────────────────────────
 
 export function Editor({
   document,
@@ -86,11 +19,14 @@ export function Editor({
       <p className={styles.title}>Editor de Documento</p>
 
       {showVariables && onAddVariable && onRemoveVariable && (
-        <VariablesPanel
-          variables={variables}
-          onAdd={onAddVariable}
-          onRemove={onRemoveVariable}
-        />
+        <div className={styles.section}>
+          <p className={styles.sectionTitle}>Variáveis de teste</p>
+          <VariablesPanel
+            variables={variables}
+            onAdd={onAddVariable}
+            onRemove={onRemoveVariable}
+          />
+        </div>
       )}
 
       <div className={styles.section}>
@@ -125,29 +61,29 @@ export function Editor({
                   {summarizeComponent(component)}
                 </span>
                 <div className={styles.componentActions}>
-                  <button
-                    className={styles.iconButton}
+                  <Button
+                    variant="icon"
                     onClick={() => onMoveComponent(index, "up")}
                     disabled={index === 0}
                     title="Mover para cima"
                   >
                     ↑
-                  </button>
-                  <button
-                    className={styles.iconButton}
+                  </Button>
+                  <Button
+                    variant="icon"
                     onClick={() => onMoveComponent(index, "down")}
                     disabled={index === document.components.length - 1}
                     title="Mover para baixo"
                   >
                     ↓
-                  </button>
-                  <button
-                    className={`${styles.iconButton} ${styles.danger}`}
+                  </Button>
+                  <Button
+                    variant="icon-danger"
                     onClick={() => onRemoveComponent(index)}
                     title="Remover"
                   >
                     ×
-                  </button>
+                  </Button>
                 </div>
               </div>
             ))}

@@ -1,5 +1,5 @@
 import type { Document, Variables } from '../../types';
-import type { LoopVariables } from '../variablesFiller/VariablesFiller.types';
+import type { LoopVariables } from '../../../public/variablesFiller/VariablesFiller.types';
 
 export interface PreviewProps {
   document: Document;
